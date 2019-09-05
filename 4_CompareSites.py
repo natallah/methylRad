@@ -5,17 +5,10 @@ import sys, getopt
 
 from collections import Counter
 
+pd.options.mode.chained_assignment = None 
+
 def main(argv):
-    """ 
-        Function to match all sites to the reference genome. 
-        Edit sites to account for the CGAR strings 
-
-        Output: 
-            - The final edited sites are stored in (sample_name)_readsCatalogue/(sample_name)_finalSites.tsv
-    """
-
     inputFile = ''
-    
     try:
         opts, args = getopt.getopt(argv, "hi:", ["ifile="])
     except getopt.GetoptError:
@@ -149,6 +142,11 @@ def main(argv):
 
             # Include counts in data frame
             inVals = countSiteFil.loc[(countSiteFil['Chr'] == j) & (countSiteFil['Site'].isin(bCount))]
+            #newinVals = inVals
+            #newinVals['Total'] = newinVals.groupby(['Chr', 'Site'])
+            #newinVals2 = newinVals.drop_duplicates(subset=['Chr', 'Site'])
+            #newinVals2['Count'] = newinVals2['Total']
+            #inVals = newinVals2.drop(['Total'], axis=1)
             mcgarDict2[j]['Count'] = inVals['Count'].values
 
             # Concatenate dataframe with sites marked as 'S/I/D' and 'M'
